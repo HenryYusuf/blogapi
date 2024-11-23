@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,6 +15,33 @@ class Post extends Model
         'title',
         'body',
     ];
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
+    // protected $appends = ['stored_at'];
+
+    /**
+     * Accessor to format created_at timestamp as a human readable relative
+     * time string.
+     *
+     * @return \Illuminate\Database\Eloquent\Casts\Attribute
+     */
+    // Laravel new accessor and mutator syntax
+    // public function storedAt(): Attribute
+    // {
+    //     return new Attribute(
+    //         get: fn() => $this->created_at->diffForHumans(),
+    //     );
+    // }
+
+    // * Laravel 6 accessor and mutator syntax
+    // public function getStoredAtAttribute()
+    // {
+    //     return $this->created_at->diffForHumans();
+    // }
 
     public function user()
     {
