@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PostController extends Controller
 {
@@ -16,12 +17,24 @@ class PostController extends Controller
     public function show($id)
     {
         $data = Post::find($id);
+        if (is_null($data)) {
+            return response()->json(['message' => 'Post Not Found'], 404);
+        }
         return response()->json($data, 200);
     }
 
     public function store(Request $request)
     {
         $data = $request->all();
+
+        $validator = Validator::make($data, [
+            'title' => ['required', 'min:5']
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
         $response = Post::create($data);
         return response()->json($response, 201);
     }
